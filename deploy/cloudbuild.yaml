@@ -7,6 +7,7 @@ steps:
     - --destination=gcr.io/$PROJECT_ID/build_deps:latest
     - --dockerfile=deploy/skaffold/Dockerfile.deps
     - --cache=true
+    - --cache-copy-layers=true
     - --cache-ttl=3650h # 5 months
 
 # Grab secret credentials from gcp bucket
