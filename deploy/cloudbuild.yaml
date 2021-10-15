@@ -11,17 +11,17 @@ steps:
 #    - --cache-ttl=3650h # 5 months
 
 # Build and tag skaffold-deps image using docker with cache-from
-- name: 'gcr.io/cloud-builders/docker'
-  args:
-  - 'build'
-  - '-t'
-  - 'gcr.io/$PROJECT_ID/build_deps:latest'
-  - '--cache-from'
-  - 'gcr.io/k8s-skaffold/build_deps:e34c0c143e9fe6c39a4f119547289d7142afcb0d'
-  - '-f'
-  - 'deploy/skaffold/Dockerfile.deps'
-  - '.'
-  -
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+    - 'build'
+    - '-t'
+    - 'gcr.io/$PROJECT_ID/build_deps:latest'
+    - '--cache-from'
+    - 'gcr.io/k8s-skaffold/build_deps:e34c0c143e9fe6c39a4f119547289d7142afcb0d'
+    - '-f'
+    - 'deploy/skaffold/Dockerfile.deps'
+    - '.'
+
 # Grab secret credentials from gcp bucket
   - name: gcr.io/cloud-builders/gcloud
     entrypoint: 'bash'
