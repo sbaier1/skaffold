@@ -5,6 +5,7 @@ steps:
   - name: 'gcr.io/kaniko-project/executor:latest'
     args:
     - --destination=gcr.io/$PROJECT_ID/build_deps:latest
+    - --dockerfile=deploy/skaffold/Dockerfile.deps
     - --cache=true
     - --cache-ttl=3650h # 5 months
 
