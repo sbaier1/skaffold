@@ -294,6 +294,11 @@ func IsK3dCluster(kubeContext string) bool {
 	return strings.HasPrefix(kubeContext, "k3d-")
 }
 
+// IsRancherDesktopCluster checks that the given `kubeContext` is talking to `rancher-desktop`.
+func IsRancherDesktopCluster(kubeContext string) bool {
+	return kubeContext == "rancher-desktop"
+}
+
 // K3dClusterName returns the internal name of a k3d cluster.
 func K3dClusterName(clusterName string) string {
 	if strings.HasPrefix(clusterName, "k3d-") {

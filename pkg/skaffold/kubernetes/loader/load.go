@@ -109,6 +109,14 @@ func (i *ImageLoader) LoadImages(ctx context.Context, out io.Writer, localImages
 		}
 	}
 
+	if config.IsRancherDesktopCluster(i.kubeContext) {
+		clusterName := "rancher-desktop"
+		// With `rancher-desktop`, docker images have to be loaded with the `nerdctl` CLI.
+		if err := i.loadImagesInRancherDesktopNodes(ctx, out, clusterName, artifacts); err != nil {
+			return fmt.Errorf("loading images into rancher-desktop nodes: %w", err)
+		}
+	}
+
 	return nil
 }
 
@@ -125,6 +133,14 @@ func (i *ImageLoader) loadImagesInK3dNodes(ctx context.Context, out io.Writer, k
 	output.Default.Fprintln(out, "Loading images into k3d cluster nodes...")
 	return i.loadImages(ctx, out, artifacts, func(tag string) *exec.Cmd {
 		return exec.CommandContext(ctx, "k3d", "image", "import", "--cluster", k3dCluster, tag)
+	})
+}
+
+// loadImagesInK3dNodes loads artifact images into every node of a k3s cluster.
+func (i *ImageLoader) loadImagesInRancherDesktopNodes(ctx context.Context, out io.Writer, k3dCluster string, artifacts []graph.Artifact) error {
+	output.Default.Fprintln(out, "Loading images into rancher-desktop cluster nodes...")
+	return i.loadImages(ctx, out, artifacts, func(tag string) *exec.Cmd {
+		return exec.CommandContext(ctx, "nerdctl", "-n", "k8s.io", tag)
 	})
 }
 

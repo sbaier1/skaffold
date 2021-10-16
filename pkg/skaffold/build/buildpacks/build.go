@@ -21,12 +21,16 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/GoogleContainerTools/skaffold/pkg/skaffold/config"
 	latestV1 "github.com/GoogleContainerTools/skaffold/pkg/skaffold/schema/latest/v1"
 )
 
 // Build builds an artifact with Cloud Native Buildpacks:
 // https://buildpacks.io/
 func (b *Builder) Build(ctx context.Context, out io.Writer, artifact *latestV1.Artifact, tag string) (string, error) {
+	if config.IsRancherDesktopCluster(b.kubeContext) {
+		// TODO: update build, push, ... or refactor them as needed to use kim to build to the cluster
+	}
 	built, err := b.build(ctx, out, artifact, tag)
 	if err != nil {
 		return "", err

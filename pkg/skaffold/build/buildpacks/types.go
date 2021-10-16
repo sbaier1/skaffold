@@ -27,6 +27,7 @@ type Builder struct {
 	pushImages  bool
 	mode        config.RunMode
 	artifacts   ArtifactResolver
+	kubeContext string
 }
 
 // ArtifactResolver provides an interface to resolve built artifact tags by image name.
@@ -35,11 +36,12 @@ type ArtifactResolver interface {
 }
 
 // NewArtifactBuilder returns a new buildpack artifact builder
-func NewArtifactBuilder(localDocker docker.LocalDaemon, pushImages bool, mode config.RunMode, r ArtifactResolver) *Builder {
+func NewArtifactBuilder(localDocker docker.LocalDaemon, pushImages bool, mode config.RunMode, r ArtifactResolver, kubeContext string) *Builder {
 	return &Builder{
 		localDocker: localDocker,
 		pushImages:  pushImages,
 		mode:        mode,
 		artifacts:   r,
+		kubeContext: kubeContext,
 	}
 }
